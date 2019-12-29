@@ -107,12 +107,12 @@ class DepartureBoard extends React.Component {
     const station = stationTabIndex === 0 ? 'North Station' : 'South Station'
 
     // Filter board based on station and if either the departure time is greater than
-    // the current time, or if the status isn't ON TIME. e.g. DELAYED
+    // the current time, or if the status is DELAYED
     const filterSchedules = schedules.filter(schedule => (
       schedule.relationships.stop.data.id === station &&
       schedule.attributes.departure_time !== null &&
         (new Date(schedule.attributes.departure_time) >= new Date() ||
-        this.displayStatus(schedule.relationships.prediction.data) !== "ON TIME")
+        this.displayStatus(schedule.relationships.prediction.data) === "DELAYED")
     ))
 
     return (
