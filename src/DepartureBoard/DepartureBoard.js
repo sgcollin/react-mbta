@@ -9,17 +9,21 @@ import Box from '@material-ui/core/Box'
 
 class DepartureBoard extends React.Component {
 
+  // Display time in HH:MM XM format
   displayTime(isoDate) {
     let date = new Date(isoDate)
     return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
 
+  // Display destination
   displayDestination(destination) {
     let link = "https://www.mbta.com/schedules/" + destination + "/timetable"
     let display = destination.split('-')[1].toUpperCase()
     return <a href={link} target="_blank" rel="noopener noreferrer">{display}</a>
   }
 
+  // Display track number in ## format
+  // If track is null, display TBD
   displayTrack(predictionData) {
     const predictions = this.props.predictions
     let track = "TBD"
@@ -33,12 +37,13 @@ class DepartureBoard extends React.Component {
     return track
   }
 
+  // Display status
   displayStatus(predictionData) {
     const predictions = this.props.predictions
     let status = "ON TIME"
     if (predictionData !== null) {
       predictions.forEach(prediction => {
-        if (predictionData.id === prediction.id) {
+        if (predictionData.id === prediction.id && prediction.attributes.status !== null) {
           status = prediction.attributes.status.toUpperCase()
         }
       })
@@ -46,12 +51,13 @@ class DepartureBoard extends React.Component {
     return status
   }
 
+  // Display estimated departure time in #h #m format
   displayDeparture(predictionData, scheduleTime) {
     const predictions = this.props.predictions
     let departure = "TBD"
     if (predictionData !== null) {
       predictions.forEach(prediction => {
-        if (predictionData.id === prediction.id) {
+        if (predictionData.id === prediction.id && prediction.attributes.departure_time !== null) {
           departure = this.millisecondsToString(new Date(prediction.attributes.departure_time) - new Date())
         }
       })
@@ -61,12 +67,14 @@ class DepartureBoard extends React.Component {
     return departure
   }
 
+  // Display estimated departure time color
+  // If time is less than 10 minutes, display red, else black
   displayDepartureStyle(predictionData, scheduleTime) {
     const predictions = this.props.predictions
     let time = null
     if (predictionData !== null) {
       predictions.forEach(prediction => {
-        if (predictionData.id === prediction.id) {
+        if (predictionData.id === prediction.id && prediction.attributes.departure_time !== null) {
           time = new Date(prediction.attributes.departure_time)
         }
       })
@@ -97,9 +105,13 @@ class DepartureBoard extends React.Component {
     const { schedules, stationTabIndex } = this.props
     const maxRows = 10
     const station = stationTabIndex === 0 ? 'North Station' : 'South Station'
+
+    // Filter board based on station and if either the departure time is greater than
+    // the current time, or if the status isn't ON TIME. e.g. DELAYED
     const filterSchedules = schedules.filter(schedule => (
       schedule.relationships.stop.data.id === station &&
-      (new Date(schedule.attributes.departure_time) >= new Date() ||
+      schedule.attributes.departure_time !== null &&
+        (new Date(schedule.attributes.departure_time) >= new Date() ||
         this.displayStatus(schedule.relationships.prediction.data) !== "ON TIME")
     ))
 

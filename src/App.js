@@ -20,6 +20,8 @@ class App extends React.Component {
 
   componentDidMount() {
     this.fetchSchedules()
+
+    // Fetch every 15 seconds
     this.interval = setInterval(() => this.fetchSchedules(), 15000)
   }
 

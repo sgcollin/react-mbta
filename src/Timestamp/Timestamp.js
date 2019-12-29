@@ -10,6 +10,7 @@ class Timestamp extends React.Component {
   }
 
   componentDidMount() {
+    // Update timestamp every second
     this.interval = setInterval(() => this.setState({ date: new Date() }), 1000);
   }
 
