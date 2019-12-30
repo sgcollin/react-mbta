@@ -93,7 +93,7 @@ class DepartureBoard extends React.Component {
     const hours = Math.floor(seconds/3600)
     if (hours > 0) {
       string = hours + "h " + minutes + "m"
-    } else if (minutes > 1 && minutes < 60) {
+    } else if (minutes > 1 && minutes <= 60) {
       string = minutes + "m"
     } else {
       string = "<1m"
