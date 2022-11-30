@@ -30,7 +30,7 @@ class App extends React.Component {
   }
 
   fetchSchedules() {
-    const url = 'https://api-v3.mbta.com/schedules?filter[stop]=North%20Station,South%20Station&include=prediction&sort=departure_time,arrival_time'
+    const url = 'https://api-v3.mbta.com/schedules?filter[stop]=BNT-0000,NEC-2287&include=prediction&sort=departure_time,arrival_time'
     fetch(url)
       .then(response => response.json())
       .then((data, included) => this.setState({

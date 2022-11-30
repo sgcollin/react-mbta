@@ -27,13 +27,13 @@ class DepartureBoard extends React.Component {
   displayTrack(predictionData) {
     const predictions = this.props.predictions
     let track = "TBD"
-    if (predictionData !== null) {
-      predictions.forEach(prediction => {
-        if (predictionData.id === prediction.id && prediction.relationships.stop.data.id.includes('-')) {
-          track = prediction.relationships.stop.data.id.split('-')[1]
-        }
-      })
-    }
+    // if (predictionData !== null) {
+    //   predictions.forEach(prediction => {
+    //     if (predictionData.id === prediction.id && prediction.relationships.stop.data.id.includes('-')) {
+    //       track = prediction.relationships.stop.data.id.split('-')[1]
+    //     }
+    //   })
+    // }
     return track
   }
 
@@ -104,7 +104,7 @@ class DepartureBoard extends React.Component {
   render() {
     const { schedules, stationTabIndex } = this.props
     const maxRows = 10
-    const station = stationTabIndex === 0 ? 'North Station' : 'South Station'
+    const station = stationTabIndex === 0 ? 'BNT-0000' : 'NEC-2287'
 
     // Filter board based on station and if either the departure time is greater than
     // the current time, or if the status is DELAYED
